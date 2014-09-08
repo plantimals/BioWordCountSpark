@@ -1,5 +1,0 @@
-val file = sc.textFile("out.vcf")
-val rows = file.filter(!_.startsWith("#"))
-val refVar = rows.map(_.split("\t").drop(3).take(2))
-val answer = refVar.map(data => (data(0)+" -> "+data(1) -> 1)).reduceByKey(_ + _)
-answer.sortByKey().saveAsTextFile("answer.txt")
