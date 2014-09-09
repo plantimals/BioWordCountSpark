@@ -8,7 +8,8 @@ object BioWordCountSpark {
     val file = sc.textFile(args(0))
     val rows = file.filter(!_.startsWith("#"))
     val refVar = rows.map(_.split("\t").drop(3).take(2))
-    val answer = refVar.map(data => (data(0)+" -> "+data(1) -> 1)).reduceByKey(_ + _)
+    val refVarNoIndel = refVar.filter(refvar => (refvar(0).length() == 1) && (refvar(1).length() == 1))
+    val answer = refVarNoIndel.map(data => (data(0)+" -> "+data(1) -> 1)).reduceByKey(_ + _)
     answer.sortByKey().saveAsTextFile("answer")
   }
 }
